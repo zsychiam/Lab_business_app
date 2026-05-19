@@ -184,7 +184,7 @@ class MainWindow(QMainWindow):
     def __init__(self, db: Database) -> None:
         super().__init__()
         self.db = db
-        self.setWindowTitle("Модуль справочников")
+        self.setWindowTitle("Справочники и БД")
         self.resize(1100, 680)
         self.setMinimumSize(QSize(800, 500))
         self.setStyleSheet(STYLESHEET)
@@ -198,7 +198,7 @@ class MainWindow(QMainWindow):
         root.setSpacing(0)
         root.setContentsMargins(0, 0, 0, 0)
 
-        header = QLabel("Модуль справочников")
+        header = QLabel("Справочники и БД")
         header.setObjectName("headerLabel")
         root.addWidget(header)
 
@@ -425,13 +425,18 @@ class MainWindow(QMainWindow):
         dt = self._current_dict_type()
         name_item = self.table.item(self.table.currentRow(), 1)
         name = name_item.text() if name_item else str(rid)
-        reply = QMessageBox.question(
-            self, "Подтверждение",
-            f"Удалить запись «{name}»?\n\nДанные физически останутся в базе (мягкое удаление).",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-        if reply != QMessageBox.StandardButton.Yes: return
+
+        msg = QMessageBox(self)
+        msg.setWindowTitle("Подтверждение")
+        msg.setText(f"Удалить запись «{name}»?\n\nДанные физически останутся в базе (мягкое удаление).")
+        msg.setIcon(QMessageBox.Icon.Question)
+        yes_btn = msg.addButton("Да", QMessageBox.ButtonRole.YesRole)
+        no_btn = msg.addButton("Нет", QMessageBox.ButtonRole.NoRole)
+        msg.setDefaultButton(no_btn)
+        msg.exec()
+
+        if msg.clickedButton() != yes_btn: return
+
         try:
             if dt == 'countries':
                 self.db.delete_country(rid)

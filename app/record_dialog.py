@@ -79,6 +79,7 @@ class RecordDialog(QDialog):
         root.addLayout(form); root.addSpacing(8); root.addWidget(_sep())
         if self.mode == 'view':
             btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+            btns.button(QDialogButtonBox.StandardButton.Close).setText("Закрыть")
             btns.rejected.connect(self.reject)
         else:
             btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)

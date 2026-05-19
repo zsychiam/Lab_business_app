@@ -6,7 +6,7 @@ from main_window import MainWindow
 def main():
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create('Fusion'))
-    app.setApplicationName("Модуль справочников")
+    app.setApplicationName("Справочники и БД")
     dlg = ConnectionDialog()
     if dlg.exec() == QDialog.DialogCode.Accepted:
         window = MainWindow(dlg.get_database())
